@@ -8,18 +8,57 @@
 </head>
 <body>
 
-    <!-- STAGE 1: ONBOARDING LANDING SCREEN -->
-    <div id="onboarding-screen" class="screen active">
+    <!-- STAGE 0: SPLASH INTRO PAGE -->
+    <div id="splash-screen" class="screen active">
+        <div class="top-mini-logo-bar">
+            <div class="logo-box-square">VL</div>
+            <div>
+                <strong>VIDYA LOOP</strong><br>
+                <small>Building India's future, one student at a time.</small>
+            </div>
+        </div>
+
+        <div class="splash-hero-container">
+            <div class="splash-center-logo">Vidya Loop</div>
+            <h3 class="splash-hero-tagline">Building India's future, one student at a time</h3>
+            <p class="splash-hero-paragraph">Discover your unique strengths and potential through our AI-personalized assessment. Unlock insights across confidence, self-awareness, decision-making, emotional balance, and drive.</p>
+            
+            <div style="text-align: center; margin: 35px 0;">
+                <button class="btn-gradient-orange" onclick="showOnboardingForm()">✨ Start Assessment &rarr;</button>
+            </div>
+
+            <div class="feature-badges-row">
+                <div class="feature-item-card">
+                    <span class="badge-icon icon-purple">🧠</span>
+                    <h4>5 growth dimensions</h4>
+                    <p>A clear personality map across expression, awareness, choices, balance, and ambition.</p>
+                </div>
+                <div class="feature-item-card">
+                    <span class="badge-icon icon-teal">📋</span>
+                    <h4>30 thoughtful prompts</h4>
+                    <p>A calm, guided flow that feels focused instead of exam-like.</p>
+                </div>
+                <div class="feature-item-card">
+                    <span class="badge-icon icon-blue">🎯</span>
+                    <h4>Action-ready report</h4>
+                    <p>A personalized summary with strengths, growth areas, and next steps.</p>
+                </div>
+            </div>
+
+            <div class="time-capsule-badge">
+                🏆 10 minutes to a complete profile
+            </div>
+        </div>
+    </div>
+
+    <!-- STAGE 1: ONBOARDING DATA CAPTURE FORM -->
+    <div id="onboarding-screen" class="screen">
         <div class="landing-hero">
-            <h1>Vidya Loop</h1>
-            <h3>Building India's future, one student at a time</h3>
-            <p>Discover your unique strengths and potential through our AI-personalized assessment. Unlock insights across confidence, self-awareness, decision-making, emotional balance, and drive.</p>
+            <h1 style="color: #114B43; margin:0; font-size: 2.5em;">Let us personalize the report.</h1>
+            <p style="color: #6B7280; margin: 10px 0 0 0;">These details appear in the final PDF and help the generated report feel specific to the student.</p>
         </div>
         
-        <div class="form-card">
-            <h2>Let us personalize the report.</h2>
-            <p class="form-subtitle">These details appear in the final report and help the generated analysis feel specific to your journey.</p>
-            
+        <div class="form-card" style="margin-top: 30px;">
             <div class="form-group">
                 <label>Student Name</label>
                 <input type="text" id="student-name" value="Bharmal" placeholder="Enter your full name">
@@ -33,7 +72,7 @@
                 <input type="text" id="class-grade" placeholder="e.g., Class 10">
             </div>
             
-            <button class="btn-primary" onclick="startAssessment()">Begin Assessment →</button>
+            <button class="btn-primary" onclick="startAssessment()">Begin Assessment &rarr;</button>
         </div>
     </div>
 
@@ -66,12 +105,12 @@
 
             <div class="quiz-navigation">
                 <button class="btn-secondary" id="prev-btn" onclick="goToPrevQuestion()" disabled>Previous</button>
-                <button class="btn-primary" id="next-btn" onclick="goToNextQuestion()">Next →</button>
+                <button class="btn-primary" id="next-btn" onclick="goToNextQuestion()" style="width: 180px;">Next &rarr;</button>
             </div>
         </div>
     </div>
 
-    <!-- STAGE 3: PREMIUM ASSESSMENT REPORT DASHBOARD -->
+    <!-- STAGE 3: FULL DYNAMIC LONGER REPORT SCREEN -->
     <div id="dashboard-screen" class="screen">
         <div class="report-branding-header">
             <span class="report-badge">PERSONALIZED GROWTH REPORT</span>
@@ -83,18 +122,19 @@
             </p>
         </div>
 
-        <div class="dashboard-tabs-bar">
-            <button class="nav-tab active" onclick="switchReportTab(event, 'tab-overview')">Overview</button>
-            <button class="nav-tab" onclick="switchReportTab(event, 'tab-confidence')">Confidence & Expression</button>
-            <button class="nav-tab" onclick="switchReportTab(event, 'tab-awareness')">Self-Awareness</button>
-            <button class="nav-tab" onclick="switchReportTab(event, 'tab-decision')">Decision-Making Style</button>
-            <button class="nav-tab" onclick="switchReportTab(event, 'tab-balance')">Emotional Balance</button>
-            <button class="nav-tab" onclick="switchReportTab(event, 'tab-drive')">Drive & Future Orientation</button>
-            <button class="nav-tab highlight-tab" onclick="switchReportTab(event, 'tab-snapshot')">Personality Snapshot</button>
+        <!-- Scroll Anchor Bar -->
+        <div class="dashboard-tabs-bar sticky-nav">
+            <button class="nav-tab active" onclick="scrollToSection('section-overview')">Overview</button>
+            <button class="nav-tab" onclick="scrollToSection('panel-confidence')">Confidence & Expression</button>
+            <button class="nav-tab" onclick="scrollToSection('panel-awareness')">Self-Awareness</button>
+            <button class="nav-tab" onclick="scrollToSection('panel-decision')">Decision-Making Style</button>
+            <button class="nav-tab" onclick="scrollToSection('panel-balance')">Emotional Balance</button>
+            <button class="nav-tab" onclick="scrollToSection('panel-drive')">Drive & Future Orientation</button>
+            <button class="nav-tab highlight-tab" onclick="scrollToSection('panel-snapshot')">Personality Snapshot</button>
         </div>
 
-        <!-- TAB CONTENT: OVERVIEW -->
-        <div id="tab-overview" class="report-panel active">
+        <!-- 1. OVERVIEW BLOCK -->
+        <div id="section-overview" class="report-scroll-block">
             <h3 class="panel-section-title">Core Dimensions Growth Matrix</h3>
             <div class="matrix-grid">
                 <div class="matrix-card" id="card-m-conf"></div>
@@ -109,15 +149,15 @@
             </div>
         </div>
 
-        <!-- TEMPLATE PANELS FOR INDIVIDUAL TRAITS (POPULATED DYNAMICALLY BY SCRIPT.JS) -->
-        <div id="tab-confidence" class="report-panel"></div>
-        <div id="tab-awareness" class="report-panel"></div>
-        <div id="tab-decision" class="report-panel"></div>
-        <div id="tab-balance" class="report-panel"></div>
-        <div id="tab-drive" class="report-panel"></div>
+        <!-- 2. SEQUENTIAL TRAIT PANELS -->
+        <div id="panel-confidence" class="report-scroll-block"></div>
+        <div id="panel-awareness" class="report-scroll-block"></div>
+        <div id="panel-decision" class="report-scroll-block"></div>
+        <div id="panel-balance" class="report-scroll-block"></div>
+        <div id="panel-drive" class="report-scroll-block"></div>
 
-        <!-- TAB CONTENT: DARK-THEMED SNAPSHOT PROFILE -->
-        <div id="tab-snapshot" class="report-panel dark-snapshot-view">
+        <!-- 3. DARK-THEMED SNAPSHOT PROFILE SECTION -->
+        <div id="panel-snapshot" class="report-scroll-block dark-snapshot-view">
             <h2>Overall Personality Snapshot</h2>
             <p class="dark-view-subtitle">Strongest areas, growth areas, focus areas, and final encouragement.</p>
             <p class="dark-view-summary" id="snapshot-summary-para"></p>
@@ -137,25 +177,25 @@
             <div class="focus-path-row">
                 <div class="focus-item-block block-orange">
                     <span class="f-num">FOCUS 01</span>
-                    <p>Practice one structured action habit selection loop daily to build momentum under pressure.</p>
+                    <p id="txt-focus-1"></p>
                 </div>
                 <div class="focus-item-block block-green">
                     <span class="f-num">FOCUS 02</span>
-                    <p>Channel natural communication assets to balance collaborative milestones with group peers.</p>
+                    <p id="txt-focus-2"></p>
                 </div>
                 <div class="focus-item-block block-blue">
                     <span class="f-num">FOCUS 03</span>
-                    <p>Review tracking metrics weekly to adapt goal systems without creating performance fatigue.</p>
+                    <p id="txt-focus-3"></p>
                 </div>
             </div>
 
             <div class="final-encouragement-footer">
-                <b>Final Encouragement Note</b>
-                <p>This report is an architectural growth guide, not a fixed classification label. Your calculated baseline strengths confirm that you already possess the capabilities needed to scale your framework. Keep iterating execution choices consistently, trust your reflective processing logic, and celebrate your ongoing transformation progress milestones.</p>
+                <b>FINAL ENCOURAGEMENT NOTE</b>
+                <p id="txt-final-note"></p>
             </div>
             
             <div class="action-footer-buttons">
-                <button class="btn-primary" style="background-color: #F97316;" onclick="window.print()">Download Professional PDF</button>
+                <button class="btn-primary" style="background-color: #F97316; width: auto;" onclick="window.print()">Download Professional PDF</button>
                 <button class="btn-secondary" style="color: white; border-color: rgba(255,255,255,0.3);" onclick="restartQuiz()">Take Again</button>
             </div>
         </div>
