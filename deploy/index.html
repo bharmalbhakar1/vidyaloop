@@ -1,1 +1,166 @@
-                <p>This report is an architectural growth guide, not a fixed classification label. Your calculated baseline strengths confirm that you already possess the capabilities needed
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidyaloop - Student Personality Assessment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- STAGE 1: ONBOARDING LANDING SCREEN -->
+    <div id="onboarding-screen" class="screen active">
+        <div class="landing-hero">
+            <h1>Vidya Loop</h1>
+            <h3>Building India's future, one student at a time</h3>
+            <p>Discover your unique strengths and potential through our AI-personalized assessment. Unlock insights across confidence, self-awareness, decision-making, emotional balance, and drive.</p>
+        </div>
+        
+        <div class="form-card">
+            <h2>Let us personalize the report.</h2>
+            <p class="form-subtitle">These details appear in the final report and help the generated analysis feel specific to your journey.</p>
+            
+            <div class="form-group">
+                <label>Student Name</label>
+                <input type="text" id="student-name" value="Bharmal" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>School Name</label>
+                <input type="text" id="school-name" value="IIT Campus High School" placeholder="Enter your school name">
+            </div>
+            <div class="form-group">
+                <label>Class / Grade</label>
+                <input type="text" id="class-grade" placeholder="e.g., Class 10">
+            </div>
+            
+            <button class="btn-primary" onclick="startAssessment()">Begin Assessment →</button>
+        </div>
+    </div>
+
+    <!-- STAGE 2: QUIZ STEPS SCREEN -->
+    <div id="quiz-screen" class="screen">
+        <div class="quiz-header">
+            <div>
+                <span class="quiz-progress-text" id="quiz-meta">Question 1 of 30 | 0 attempted</span>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="quiz-progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+            <div class="dimension-badge-container">
+                <span class="dim-label">CURRENT DIMENSION</span>
+                <span class="dim-value" id="current-dimension-name">Confidence & Expression</span>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <span class="card-dimension-tag" id="card-dimension-tag">CONFIDENCE & EXPRESSION</span>
+            <h2 id="question-text">I speak up in class or group discussions even when I am not fully sure of my answer.</h2>
+            
+            <div class="radio-options">
+                <label class="option-label"><input type="radio" name="response" value="1"> Strongly Disagree</label>
+                <label class="option-label"><input type="radio" name="response" value="2"> Disagree</label>
+                <label class="option-label"><input type="radio" name="response" value="3" checked> Neutral</label>
+                <label class="option-label"><input type="radio" name="response" value="4"> Agree</label>
+                <label class="option-label"><input type="radio" name="response" value="5"> Strongly Agree</label>
+            </div>
+
+            <div class="quiz-navigation">
+                <button class="btn-secondary" id="prev-btn" onclick="goToPrevQuestion()" disabled>Previous</button>
+                <button class="btn-primary" id="next-btn" onclick="goToNextQuestion()">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STAGE 3: PREMIUM ASSESSMENT REPORT DASHBOARD -->
+    <div id="dashboard-screen" class="screen">
+        <div class="report-branding-header">
+            <span class="report-badge">PERSONALIZED GROWTH REPORT</span>
+            <h1 class="report-main-title">Vidyaloop Personality Report</h1>
+            <p class="report-metadata-line">
+                👤 Name: <span id="out-name"></span> &nbsp;|&nbsp; 
+                🏫 School: <span id="out-school"></span> &nbsp;|&nbsp; 
+                🎓 Grade: <span id="out-grade"></span>
+            </p>
+        </div>
+
+        <div class="dashboard-tabs-bar">
+            <button class="nav-tab active" onclick="switchReportTab(event, 'tab-overview')">Overview</button>
+            <button class="nav-tab" onclick="switchReportTab(event, 'tab-confidence')">Confidence & Expression</button>
+            <button class="nav-tab" onclick="switchReportTab(event, 'tab-awareness')">Self-Awareness</button>
+            <button class="nav-tab" onclick="switchReportTab(event, 'tab-decision')">Decision-Making Style</button>
+            <button class="nav-tab" onclick="switchReportTab(event, 'tab-balance')">Emotional Balance</button>
+            <button class="nav-tab" onclick="switchReportTab(event, 'tab-drive')">Drive & Future Orientation</button>
+            <button class="nav-tab highlight-tab" onclick="switchReportTab(event, 'tab-snapshot')">Personality Snapshot</button>
+        </div>
+
+        <!-- TAB CONTENT: OVERVIEW -->
+        <div id="tab-overview" class="report-panel active">
+            <h3 class="panel-section-title">Core Dimensions Growth Matrix</h3>
+            <div class="matrix-grid">
+                <div class="matrix-card" id="card-m-conf"></div>
+                <div class="matrix-card" id="card-m-aware"></div>
+                <div class="matrix-card" id="card-m-dec"></div>
+                <div class="matrix-card" id="card-m-bal"></div>
+                <div class="matrix-card" id="card-m-drive"></div>
+            </div>
+            <div class="analysis-box-container">
+                <h4>Overall Analysis</h4>
+                <p id="overall-analysis-text"></p>
+            </div>
+        </div>
+
+        <!-- TEMPLATE PANELS FOR INDIVIDUAL TRAITS (POPULATED DYNAMICALLY BY SCRIPT.JS) -->
+        <div id="tab-confidence" class="report-panel"></div>
+        <div id="tab-awareness" class="report-panel"></div>
+        <div id="tab-decision" class="report-panel"></div>
+        <div id="tab-balance" class="report-panel"></div>
+        <div id="tab-drive" class="report-panel"></div>
+
+        <!-- TAB CONTENT: DARK-THEMED SNAPSHOT PROFILE -->
+        <div id="tab-snapshot" class="report-panel dark-snapshot-view">
+            <h2>Overall Personality Snapshot</h2>
+            <p class="dark-view-subtitle">Strongest areas, growth areas, focus areas, and final encouragement.</p>
+            <p class="dark-view-summary" id="snapshot-summary-para"></p>
+            
+            <div class="split-strengths-box">
+                <div class="split-segment">
+                    <span class="segment-tag tag-green">• STRONGEST AREAS</span>
+                    <h3 id="snapshot-strongest-title"></h3>
+                </div>
+                <div class="split-segment">
+                    <span class="segment-tag tag-orange">• GROWTH AREAS</span>
+                    <h3 id="snapshot-weakest-title"></h3>
+                </div>
+            </div>
+
+            <h4 style="color: white; margin-top: 30px; margin-bottom: 15px;">Recommended Action Focus Path</h4>
+            <div class="focus-path-row">
+                <div class="focus-item-block block-orange">
+                    <span class="f-num">FOCUS 01</span>
+                    <p>Practice one structured action habit selection loop daily to build momentum under pressure.</p>
+                </div>
+                <div class="focus-item-block block-green">
+                    <span class="f-num">FOCUS 02</span>
+                    <p>Channel natural communication assets to balance collaborative milestones with group peers.</p>
+                </div>
+                <div class="focus-item-block block-blue">
+                    <span class="f-num">FOCUS 03</span>
+                    <p>Review tracking metrics weekly to adapt goal systems without creating performance fatigue.</p>
+                </div>
+            </div>
+
+            <div class="final-encouragement-footer">
+                <b>Final Encouragement Note</b>
+                <p>This report is an architectural growth guide, not a fixed classification label. Your calculated baseline strengths confirm that you already possess the capabilities needed to scale your framework. Keep iterating execution choices consistently, trust your reflective processing logic, and celebrate your ongoing transformation progress milestones.</p>
+            </div>
+            
+            <div class="action-footer-buttons">
+                <button class="btn-primary" style="background-color: #F97316;" onclick="window.print()">Download Professional PDF</button>
+                <button class="btn-secondary" style="color: white; border-color: rgba(255,255,255,0.3);" onclick="restartQuiz()">Take Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
